@@ -1,20 +1,22 @@
-import React, { useRef, useState } from 'react'
+import React, { useState } from 'react'
 import Rating from '@material-ui/lab/Rating';
 import { Button, TextField } from '@material-ui/core';
 
 
 
-const RatingForm = props => {
-    const commentInput = useRef()
+const RatingForm = ({ onSubmit }) => {
     const [stars, setStars] = useState(0)
+    const [comment, setComment] = useState("")
 
     function handleSubmit(event) {
         event.preventDefault()
-        console.log("newRating", stars, commentInput.current.value)
+        console.log("newRating", stars, comment)
+        onSubmit({ stars: stars, comment: comment })
+
     }
 
     return (<form onSubmit={handleSubmit} noValidate autoComplete="off">
-        <TextField id="comment" label="Commentaire" inputRef={commentInput} />
+        <TextField id="comment" label="Commentaire" value={comment} onChange={(event) => { setComment(event.target.value) }} />
 
         <Rating name="stars" value={stars} onChange={(event, newValue) => {
             setStars(newValue);
