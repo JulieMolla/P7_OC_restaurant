@@ -1,5 +1,6 @@
 [
     {
+        "id": 1,
         "restaurantName": "Bronco",
         "address": "39 Rue des Petites Écuries, 75010 Paris",
         "lat": 48.8737815,
@@ -16,6 +17,7 @@
         ]
     },
     {
+        "id": 2,
         "restaurantName": "Babalou",
         "address": "4 Rue Lamarck, 75018 Paris",
         "lat": 48.8865035,
@@ -32,6 +34,7 @@
         ]
     },
     {
+        "id": 3,
         "restaurantName": "Substance",
         "address": "18 rue de Chaillot, 75116 Paris",
         "lat": 48.86731,
@@ -52,6 +55,7 @@
         ]
     },
     {
+        "id": 4,
         "restaurantName": "Le Moulin d'Issy",
         "address": "1, place Jacques Madaule, 92130 Issy-les-Moulineaux",
         "lat": 48.82353,
@@ -72,6 +76,7 @@
         ]
     },
     {
+        "id": 5,
         "restaurantName": "Le Bistrot d'André",
         "address": "232, rue St Charles, 75015 Paris",
         "lat": 48.83730,

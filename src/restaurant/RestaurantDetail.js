@@ -2,12 +2,12 @@ import React from "react";
 import { RatingList } from "./RatingList";
 import RatingForm from "./RatingForm";
 import { useState } from "react";
-import { GOOGLE_API_KEY } from "../map/google-api-key";
+import { getStreetViewImage } from "../map/map.utils";
 
 function RestaurantDetail({ restaurant, onClose }) {
   const [ratings, setRatings] = useState(restaurant.ratings);
 
-  const url = `https://maps.googleapis.com/maps/api/streetview?size=400x400&location=${props.restaurant.lat},${props.restaurant.long}&key=${GOOGLE_API_KEY}`;
+  const url = getStreetViewImage(restaurant.lat, restaurant.long);
 
   function handleAddRating(rating) {
     setRatings([...ratings, rating]);
@@ -22,6 +22,7 @@ function RestaurantDetail({ restaurant, onClose }) {
       <h1>{restaurant.restaurantName}</h1>
       <button onClick={handleClose}>Fermer</button>
       <img src={url} alt={restaurant.restaurantName}></img>
+      <p>{restaurant.address}</p>
 
       <RatingList ratings={ratings} />
 
