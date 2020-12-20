@@ -6,10 +6,6 @@ import { GOOGLE_API_KEY } from "./google-api-key";
 
 class SimpleMap extends Component {
   static defaultProps = {
-    center: {
-      lat: 48.8534,
-      lng: 2.3488,
-    },
     zoom: 12,
   };
 
@@ -27,7 +23,10 @@ class SimpleMap extends Component {
   };
 
   handleCreateRestaurant = () => {
-    this.props.onCreateRestaurant({ lat: this.state.dropDownMenu.lat, long: this.state.dropDownMenu.lng });
+    this.props.onCreateRestaurant({
+      lat: this.state.dropDownMenu.lat,
+      long: this.state.dropDownMenu.lng,
+    });
     this.setState({ dropDownMenu: null });
   };
 
@@ -36,7 +35,16 @@ class SimpleMap extends Component {
       // Important! Always set the container height explicitly
       <div style={{ height: "100vh", width: "100%", position: "relative" }}>
         <GoogleMapReact
-          bootstrapURLKeys={{ key: GOOGLE_API_KEY }}
+          bootstrapURLKeys={{ key: GOOGLE_API_KEY, libraries: ["places"] }}
+          yesIWantToUseGoogleMapApiInternals
+          onGoogleApiLoaded={({ map, maps }) => {
+            const placesService = new maps.places.PlacesService(map);
+            this.props.onMap(map);
+            this.props.onGoogleApi({
+              maps,
+              places: placesService,
+            });
+          }}
           defaultCenter={this.props.center}
           defaultZoom={this.props.zoom}
           onClick={this.handleClickMap}
