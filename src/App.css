@@ -1,7 +1,14 @@
-.App-header {
-  background-color: aquamarine;
+.container {
+  display: grid;
+  grid-template-rows: auto auto 1fr;
+  height: 100vh;
+}
+
+.search {
+  padding: 50px;
+  background-color: #bada55;
 }
 
 .sideBar {
-  padding: 25px;
+  overflow-y: scroll;
 }

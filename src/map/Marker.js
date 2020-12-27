@@ -1,6 +1,9 @@
-import React from "react";
+import { Avatar } from "@material-ui/core";
+import React, { useState, useContext, useEffect } from "react";
 
-function getStyle(props) {
+import { RestaurantContext } from "../restaurant/RestaurantContext";
+
+function getStyle({ isHover, isSelected, isCreating, style }) {
   const size = 30;
   const normalStyle = {
     // position: "absolute",
@@ -8,43 +11,87 @@ function getStyle(props) {
     height: size,
     marginLeft: -size / 2,
     marginTop: -size / 2,
-    backgroundColor: "grey",
-    borderRadius: size,
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
+    fontSize: "1rem",
+    lineHeight: "unset",
+    ...style,
   };
 
   const hoverStyle = { ...normalStyle, backgroundColor: "red" };
   const selectedStyle = { ...normalStyle, backgroundColor: "green" };
+  const creatingStyle = { ...normalStyle, backgroundColor: "blue" };
 
-  if (props.restaurant.isSelected || props.restaurant.isCreating) {
+  if (isCreating) {
+    return creatingStyle;
+  }
+
+  if (isSelected) {
     return selectedStyle;
   }
-  if (props.restaurant.isHover) {
+
+  if (isHover) {
     return hoverStyle;
   }
 
   return normalStyle;
 }
 
-function Marker(props) {
+function Marker({ children, restaurant, style }) {
+  const [isCreating, setIsCreating] = useState(false);
+  const [isSelected, setIsSelected] = useState(false);
+  const [isHover, setIsHover] = useState(false);
+
+  const { selected, hover, setHoverRestaurant, setDetailView } = useContext(
+    RestaurantContext
+  );
+
+  useEffect(() => {
+    if (!restaurant) {
+      setIsCreating(true);
+    } else {
+      setIsCreating(false);
+    }
+  }, [restaurant]);
+
+  useEffect(() => {
+    if (restaurant === selected) {
+      setIsSelected(true);
+    } else {
+      setIsSelected(false);
+    }
+  }, [restaurant, selected]);
+
+  useEffect(() => {
+    if (restaurant === hover) {
+      setIsHover(true);
+    } else {
+      setIsHover(false);
+    }
+  }, [restaurant, hover]);
+
   function handleClick() {
-    props.onClick(props.restaurant);
+    setDetailView(restaurant);
   }
 
   function handleMouseEnter() {
-    props.onHover(props.restaurant);
+    setHoverRestaurant(restaurant);
   }
 
   function handleMouseLeave() {
-    props.onHover(null);
+    setHoverRestaurant(undefined);
   }
 
   return (
-    <div style={getStyle(props)} onClick={handleClick} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-      {props.index}
-    </div>
+    <Avatar
+      style={getStyle({ isHover, isSelected, isCreating, style })}
+      onClick={handleClick}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
+      {children}
+    </Avatar>
   );
 }
 

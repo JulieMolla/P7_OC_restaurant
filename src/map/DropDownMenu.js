@@ -8,11 +8,14 @@ function DropDownMenu({ x, y, onCreateRestaurant }) {
         position: "absolute",
         top: y,
         left: x,
-        backgroundColor: "grey",
+        backgroundColor: "white",
       }}
     >
       <MenuList>
-        <MenuItem onClick={onCreateRestaurant}> Ajouter un restaurant ici </MenuItem>
+        <MenuItem onClick={onCreateRestaurant}>
+          {" "}
+          Ajouter un restaurant ici{" "}
+        </MenuItem>
       </MenuList>
     </div>
   );

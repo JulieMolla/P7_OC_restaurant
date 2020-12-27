@@ -1,33 +1,75 @@
-import React from "react";
-import { RatingList } from "./RatingList";
-import RatingForm from "./RatingForm";
-import { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
+import { RatingList } from "../rating/RatingList";
+import RatingForm from "../rating/RatingForm";
 import { getStreetViewImage } from "../map/map.utils";
+import { RestaurantContext } from "./RestaurantContext";
+import AverageRating from "../rating/AverageRating";
+import { Button, IconButton, Paper } from "@material-ui/core";
+import CloseIcon from "@material-ui/icons/Close";
 
-function RestaurantDetail({ restaurant, onClose }) {
-  const [ratings, setRatings] = useState(restaurant.ratings);
+function RestaurantDetail() {
+  const { selected, setListView, updateRestaurant } = useContext(
+    RestaurantContext
+  );
 
-  const url = getStreetViewImage(restaurant.lat, restaurant.long);
+  const [restaurant, setRestaurant] = useState(selected);
+
+  useEffect(() => {
+    setRestaurant(selected);
+  }, [selected]);
+
+  const url = getStreetViewImage(selected.lat, selected.long);
 
   function handleAddRating(rating) {
-    setRatings([...ratings, rating]);
+    const updatedRestaurant = {
+      ...restaurant,
+      ratings: [...restaurant.ratings, rating],
+    };
+
+    setRestaurant(updatedRestaurant);
+    updateRestaurant(updatedRestaurant);
   }
 
   function handleClose() {
-    onClose({ ...restaurant, ratings });
+    setListView();
   }
 
   return (
-    <div>
-      <h1>{restaurant.restaurantName}</h1>
-      <button onClick={handleClose}>Fermer</button>
-      <img src={url} alt={restaurant.restaurantName}></img>
+    <Paper style={{ margin: "20px", padding: "20px" }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <h1>{restaurant.restaurantName}</h1>
+        <span>
+          <AverageRating restaurant={restaurant} />
+        </span>
+        <span style={{ flexGrow: 1 }}></span>
+        <IconButton onClick={handleClose}>
+          <CloseIcon />
+        </IconButton>
+      </div>
       <p>{restaurant.address}</p>
+      <div style={{ textAlign: "center" }}>
+        <img src={url} alt={restaurant.restaurantName}></img>
+      </div>
 
-      <RatingList ratings={ratings} />
+      <RatingList ratings={restaurant.ratings} />
 
-      <RatingForm onSubmit={handleAddRating} />
-    </div>
+      <Paper
+        elevation={3}
+        m={2}
+        style={{ padding: "20px", marginBottom: "20px" }}
+      >
+        <h6>Ajouter un avis</h6>
+        <RatingForm onSubmit={handleAddRating} />
+      </Paper>
+
+      <Button onClick={handleClose}>Fermer</Button>
+    </Paper>
   );
 }
 

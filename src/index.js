@@ -2,11 +2,18 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
+import GoogleApiContextProvider from "./map/GoogleApiContext";
+import RestaurantContextProvider from "./restaurant/RestaurantContext";
+
 import reportWebVitals from "./reportWebVitals";
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <GoogleApiContextProvider>
+      <RestaurantContextProvider>
+        <App />
+      </RestaurantContextProvider>
+    </GoogleApiContextProvider>
   </React.StrictMode>,
   document.getElementById("root")
 );

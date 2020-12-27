@@ -1,53 +1,79 @@
-import React, { useState } from "react";
-import { Button, TextField } from "@material-ui/core";
+import React, { useState, useContext, useEffect } from "react";
+import { Box, Button, Paper, TextField } from "@material-ui/core";
 import { getStreetViewImage } from "../map/map.utils";
+import { RestaurantContext } from "./RestaurantContext";
 
-function RestaurantForm({ restaurant, onSave, onClose }) {
-  const [restaurantName, setRestaurantName] = useState(restaurant.restaurantName || "");
-  const [address, setAddress] = useState(restaurant.address || "");
-  const [ratings] = useState(restaurant.ratings || []);
+function RestaurantForm() {
+  const { form, setListView, addRestaurant } = useContext(RestaurantContext);
 
-  const url = getStreetViewImage(restaurant.lat, restaurant.long);
+  const [restaurantName, setRestaurantName] = useState("");
+  const [address, setAddress] = useState("");
+  const [image, setImage] = useState("");
+
+  useEffect(() => {
+    if (form.restaurantName) {
+      setRestaurantName(form.restaurantName);
+    }
+    if (form.address) {
+      setAddress(form.address);
+    }
+    if (form.lat && form.long) {
+      const url = getStreetViewImage(form.lat, form.long);
+      setImage(url);
+    }
+  }, [form]);
 
   function handleSubmit(event) {
     event.preventDefault();
-    onSave({ ...restaurant, restaurantName, address, ratings });
+
+    // const restaurant =
+    // onSave({ ...restaurant, restaurantName, address, ratings });
+
+    addRestaurant({ ...form, restaurantName, address });
+  }
+
+  function handleCancel() {
+    setListView();
   }
 
   return (
-    <div>
+    <Paper style={{ margin: "20px", padding: "20px" }}>
       <h2>Nouveau Restaurant</h2>
+      <img src={image} alt={restaurantName}></img>
+      <form onSubmit={handleSubmit} noValidate autoComplete="off">
+        <Box component="div">
+          <TextField
+            id="restaurantName"
+            label="Nom"
+            value={restaurantName}
+            onChange={(event) => {
+              setRestaurantName(event.target.value);
+            }}
+            style={{ width: "100%", marginBotton: "10px" }}
+          />
+        </Box>
 
-      <img src={url} alt={restaurant.restaurantName}></img>
+        <Box component="div" mb={1}>
+          <TextField
+            id="address"
+            label="Adresse"
+            value={address}
+            onChange={(event) => {
+              setAddress(event.target.value);
+            }}
+            style={{ width: "100%" }}
+          />
+        </Box>
 
-      <form onSubmit={handleSubmit} noValidate autoComplete='off'>
-        <TextField
-          id='restaurantName'
-          label='Nom'
-          value={restaurantName}
-          onChange={(event) => {
-            setRestaurantName(event.target.value);
-          }}
-        />
-
-        <TextField
-          id='address'
-          label='Adresse'
-          value={address}
-          onChange={(event) => {
-            setAddress(event.target.value);
-          }}
-        />
-
-        <Button type='submit' variant='contained'>
-          Envoyer
+        <Button type="submit" variant="contained">
+          Enregistrer
         </Button>
 
-        <Button type='button' variant='contained' onClick={onClose}>
+        <Button type="button" variant="contained" onClick={handleCancel}>
           Annuler
         </Button>
       </form>
-    </div>
+    </Paper>
   );
 }
 

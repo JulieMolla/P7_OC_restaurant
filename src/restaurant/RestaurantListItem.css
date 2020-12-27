@@ -1,0 +1,25 @@
+.RestaurantListItem {
+  margin: 20px;
+  /* padding: 20px; */
+
+  display: grid;
+  grid-gap: 5px;
+  grid-template-columns: auto 1fr;
+}
+
+.RestaurantListItem .index {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 10px;
+}
+
+.RestaurantListItem header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.RestaurantListItem .info {
+  padding: 0 10px;
+}
