@@ -1,7 +1,7 @@
 import React from "react";
 import "./RestaurantListItem.css";
 import AverageRating from "../rating/AverageRating";
-import { Avatar, Box, Card } from "@material-ui/core";
+import { Box, Card } from "@material-ui/core";
 import VerifiedUserIcon from "@material-ui/icons/VerifiedUser";
 import { round } from "../utils";
 import Marker from "../map/Marker";
@@ -31,17 +31,6 @@ function RestaurantListItem({ restaurant, index, isHover, onClick, onHover }) {
     onHover(null);
   }
 
-  function getStyle(isHover) {
-    if (isHover) {
-      return {
-        borderLeft: "5px solid red",
-      };
-    }
-    return {
-      borderLeft: "5px solid transparent",
-    };
-  }
-
   return (
     <Card
       className="RestaurantListItem"
@@ -49,7 +38,6 @@ function RestaurantListItem({ restaurant, index, isHover, onClick, onHover }) {
       onClick={handleClick}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      // style={getStyle(isHover)}
     >
       <Box component="div" className="index">
         <Marker

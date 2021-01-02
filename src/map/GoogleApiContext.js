@@ -113,6 +113,7 @@ class GoogleApiContextProvider extends Component {
           const location = result.geometry.location.toJSON();
           return {
             id: result.place_id,
+            placeId: result.place_id,
             restaurantName: result.name,
             address: result.vicinity,
             lat: location.lat,
@@ -131,6 +132,30 @@ class GoogleApiContextProvider extends Component {
     });
   };
 
+  getDetail = (restaurant, onReviews) => {
+    const { placeId } = restaurant;
+    if (!placeId) {
+      onReviews([]);
+      return;
+    }
+
+    const request = {
+      placeId,
+      fields: ["reviews"],
+    };
+
+    this.state.places.getDetails(request, (place, status) => {
+      if (status === "OK") {
+        onReviews(
+          place.reviews.map((review) => ({
+            stars: review.rating,
+            comment: review.text,
+          }))
+        );
+      }
+    });
+  };
+
   render() {
     return (
       <GoogleApiContext.Provider
@@ -142,6 +167,7 @@ class GoogleApiContextProvider extends Component {
           searchNearby: this.searchNearby,
           resetMapToInitialState: this.resetMapToInitialState,
           clearPosition: this.clearPosition,
+          getDetail: this.getDetail,
         }}
       >
         {this.props.children}

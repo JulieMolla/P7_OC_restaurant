@@ -7,6 +7,7 @@ import FilteredRestaurantList from "./restaurant/FilteredRestaurantList";
 import { RestaurantContext } from "./restaurant/RestaurantContext";
 import SearchBar from "./restaurant/SearchBar";
 import { AppBar, Box, Toolbar, Typography } from "@material-ui/core";
+import Footer from "./Footer";
 
 function RestaurantView({ view }) {
   if (view === "DETAIL") {
@@ -30,10 +31,10 @@ function App() {
       <Box component="div" className="container">
         <AppBar position="static">
           <Toolbar>
-            <Typography variant="h6">Avis</Typography>
+            <Typography variant="h6">Avis Restaurants</Typography>
           </Toolbar>
         </AppBar>
-        <Box component="div" p={5}>
+        <Box component="div" zIndex={1} boxShadow={2} p={5}>
           <SearchBar />
           {/* <SearchForm /> */}
         </Box>
@@ -47,12 +48,12 @@ function App() {
         >
           <SimpleMap />
 
-          <div className="sideBar">
+          <Box component="div" className="sideBar">
             <RestaurantView view={view} />
-          </div>
+          </Box>
         </Box>
       </Box>
-      <footer>Footer</footer>
+      <Footer />
     </>
   );
 }

@@ -11,19 +11,23 @@ import { calculateDistance } from "../map/map.utils";
 import { round } from "../utils";
 
 function FilteredRestaurantList() {
-  const [filteredRestaurants, setFilteredRestaurants] = useState([]);
+  const [filteredRestaurants, setFilteredRestaurants] = useState(undefined);
 
   const [filter, setFilter] = useState([0, 5]);
 
   const google = useContext(GoogleApiContext);
-  const { restaurants, setDisplayedRestaurants } = useContext(
+  const { restaurants, setDisplayedRestaurants, isLoading } = useContext(
     RestaurantContext
   );
 
   useEffect(() => {
+    if (!google.map) {
+      // setLoading(true);
+      return;
+    }
+
     const center = google.position;
-    const bounds = google.map && google.map.getBounds();
-    console.log("center", center);
+    const bounds = google.map.getBounds();
 
     const filtered = restaurants
       .map((restaurant) => {
@@ -49,7 +53,6 @@ function FilteredRestaurantList() {
             lat: restaurant.lat,
             lng: restaurant.long,
           });
-        console.log("isOnMap", isOnMap);
         return matchRating && isOnMap;
       })
       .sort((a, b) => {
@@ -58,7 +61,6 @@ function FilteredRestaurantList() {
         );
       });
 
-    console.log("filtered", filtered);
     setFilteredRestaurants(filtered);
     setDisplayedRestaurants(filtered);
   }, [
@@ -73,7 +75,7 @@ function FilteredRestaurantList() {
     <>
       <RestaurantFilter onFilter={setFilter} />
       <RestaurantList restaurants={filteredRestaurants} />
-      <LoadMoreButton />
+      {!isLoading && <LoadMoreButton />}
     </>
   );
 }

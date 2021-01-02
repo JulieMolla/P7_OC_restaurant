@@ -1,6 +1,5 @@
-import React, { useState, useContext, useEffect } from "react";
-import { RestaurantContext } from "./RestaurantContext";
-import { Slider } from "@material-ui/core";
+import React, { useState } from "react";
+import { Box, Slider } from "@material-ui/core";
 
 import "./RestaurantFilter.css";
 
@@ -16,7 +15,7 @@ function RestaurantFilter({ onFilter }) {
   }
 
   return (
-    <div className="RestaurantFilter">
+    <Box component="div" boxShadow={2} className="RestaurantFilter">
       Affiner par note moyenne :
       <Slider
         marks={[
@@ -34,7 +33,7 @@ function RestaurantFilter({ onFilter }) {
         min={0}
         max={5}
       />
-    </div>
+    </Box>
   );
 }
 

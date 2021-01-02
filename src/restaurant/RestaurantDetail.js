@@ -6,17 +6,22 @@ import { RestaurantContext } from "./RestaurantContext";
 import AverageRating from "../rating/AverageRating";
 import { Button, IconButton, Paper } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
+import { GoogleApiContext } from "../map/GoogleApiContext";
 
 function RestaurantDetail() {
   const { selected, setListView, updateRestaurant } = useContext(
     RestaurantContext
   );
 
+  const google = useContext(GoogleApiContext);
+
   const [restaurant, setRestaurant] = useState(selected);
+  const [reviews, setReviews] = useState([]);
 
   useEffect(() => {
     setRestaurant(selected);
-  }, [selected]);
+    google.getDetail(selected, setReviews);
+  }, [selected, google]);
 
   const url = getStreetViewImage(selected.lat, selected.long);
 
@@ -57,6 +62,7 @@ function RestaurantDetail() {
         <img src={url} alt={restaurant.restaurantName}></img>
       </div>
 
+      <RatingList ratings={reviews} />
       <RatingList ratings={restaurant.ratings} />
 
       <Paper

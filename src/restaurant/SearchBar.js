@@ -5,9 +5,7 @@ import InputBase from "@material-ui/core/InputBase";
 import Divider from "@material-ui/core/Divider";
 import IconButton from "@material-ui/core/IconButton";
 import SearchIcon from "@material-ui/icons/Search";
-import DirectionsIcon from "@material-ui/icons/Directions";
 import CurrentLocationButton from "../map/CurrentLocationButton";
-import { fetchReverseGeocoding } from "../map/map.utils";
 import { GoogleApiContext } from "../map/GoogleApiContext";
 import { RestaurantContext } from "./RestaurantContext";
 import { Button } from "@material-ui/core";
@@ -34,32 +32,43 @@ const useStyles = makeStyles((theme) => ({
 
 function SearchBar() {
   const [address, setAddress] = useState("");
-  const [marker, setMarker] = useState(null);
   const classes = useStyles();
   const google = useContext(GoogleApiContext);
-  const { clearSearchResults, addRestaurants } = useContext(RestaurantContext);
+  const {
+    clearSearchResults,
+    addRestaurants,
+    setListView,
+    setLoading,
+  } = useContext(RestaurantContext);
 
   function handleLocation(position) {
+    setLoading(true);
     clearSearchResults();
     google.searchAroundPosition(position, (results, address) => {
       setAddress(address);
       addRestaurants(results);
+      setLoading(false);
     });
+    setListView();
   }
 
   function handleSearchAddress(event) {
     event.preventDefault();
+    setLoading(true);
     clearSearchResults();
     google.searchAroundAddress(address, (results, address) => {
       setAddress(address);
       addRestaurants(results);
+      setLoading(false);
     });
+    setListView();
   }
 
   function resetSearch() {
     clearSearchResults();
     setAddress("");
     google.resetMapToInitialState();
+    setListView();
   }
 
   return (
@@ -75,9 +84,6 @@ function SearchBar() {
         className={classes.root}
         onSubmit={handleSearchAddress}
       >
-        {/* <IconButton className={classes.iconButton} aria-label="menu">
-            <MenuIcon />
-            </IconButton> */}
         <InputBase
           className={classes.input}
           placeholder="Adresse"
@@ -93,13 +99,6 @@ function SearchBar() {
           <SearchIcon />
         </IconButton>
         <Divider className={classes.divider} orientation="vertical" />
-        {/* <IconButton
-        color="primary"
-        className={classes.iconButton}
-        aria-label="directions"
-      >
-        <DirectionsIcon />
-      </IconButton> */}
         <CurrentLocationButton
           className={classes.iconButton}
           onLocation={handleLocation}

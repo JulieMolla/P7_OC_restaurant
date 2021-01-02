@@ -1,8 +1,4 @@
 export function calculateAverageRating(restaurant) {
-  // if (!ratings || !ratings.length) {
-  //   return 0;
-  // }
-
   const div = Math.max(
     (restaurant.totalRatings || 0) +
       ((restaurant.ratings && restaurant.ratings.length) || 0),

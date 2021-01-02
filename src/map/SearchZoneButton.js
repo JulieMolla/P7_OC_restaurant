@@ -5,14 +5,22 @@ import { GoogleApiContext } from "./GoogleApiContext";
 
 function SearchZoneButton() {
   const google = useContext(GoogleApiContext);
-  const { clearSearchResults, addRestaurants } = useContext(RestaurantContext);
+  const {
+    clearSearchResults,
+    addRestaurants,
+    setListView,
+    setLoading,
+  } = useContext(RestaurantContext);
 
   function handleSearchClick() {
+    setLoading(true);
     clearSearchResults();
     google.clearPosition();
     google.searchNearby((results) => {
       addRestaurants(results);
+      setLoading(false);
     });
+    setListView();
   }
 
   return (

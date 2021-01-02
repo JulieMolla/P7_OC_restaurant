@@ -7,9 +7,10 @@ export const RestaurantContext = createContext();
 class RestaurantContextProvider extends Component {
   state = {
     restaurants: [...restaurantsJson],
-    filter: [0, 5],
+    // filter: [0, 5],
     displayed: [],
     view: "LIST",
+    isLoading: false,
   };
 
   setDisplayedRestaurants = (restaurants) => {
@@ -36,9 +37,9 @@ class RestaurantContextProvider extends Component {
     this.setState({ restaurants: updatedRestaurants });
   };
 
-  filterRestaurants = (filter) => {
-    this.setState({ filter });
-  };
+  // filterRestaurants = (filter) => {
+  //   this.setState({ filter });
+  // };
 
   setHoverRestaurant = (restaurant) => {
     this.setState({ hover: restaurant });
@@ -85,6 +86,12 @@ class RestaurantContextProvider extends Component {
     });
   };
 
+  setLoading = (isLoading) => {
+    this.setState({
+      isLoading,
+    });
+  };
+
   render() {
     return (
       <RestaurantContext.Provider
@@ -100,6 +107,7 @@ class RestaurantContextProvider extends Component {
           setDetailView: this.setDetailView,
           filterRestaurants: this.filterRestaurants,
           updateRestaurant: this.updateRestaurant,
+          setLoading: this.setLoading,
         }}
       >
         {this.props.children}

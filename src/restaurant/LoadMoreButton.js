@@ -29,7 +29,7 @@ function LoadMoreButton() {
   }
 
   return (
-    <Box component="div" css={{ textAlign: "center" }}>
+    <Box component="div" css={{ textAlign: "center", marginBottom: 20 }}>
       <Button variant="contained" disabled={isLoading} onClick={handleClick}>
         Charger plus de resultats
       </Button>

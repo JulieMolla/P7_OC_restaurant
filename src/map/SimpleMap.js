@@ -6,7 +6,6 @@ import { GoogleApiContext } from "./GoogleApiContext";
 import { RestaurantContext } from "../restaurant/RestaurantContext";
 import Marker from "./Marker";
 import CreateMarker from "./CreateMarker";
-import { Button } from "@material-ui/core";
 import SearchZoneButton from "./SearchZoneButton";
 
 function SimpleMap({ zoom = 12, ...props }) {
