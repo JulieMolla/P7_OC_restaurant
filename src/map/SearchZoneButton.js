@@ -3,6 +3,10 @@ import React, { useContext } from "react";
 import { RestaurantContext } from "../restaurant/RestaurantContext";
 import { GoogleApiContext } from "./GoogleApiContext";
 
+/**
+ * Component représentant un bouton à afficher sur la carte
+ * et qui permet de rechercher dans la zone afficher par la carte
+ */
 function SearchZoneButton() {
   const google = useContext(GoogleApiContext);
   const {
@@ -12,15 +16,17 @@ function SearchZoneButton() {
     setLoading,
   } = useContext(RestaurantContext);
 
+  /** Au clique sur le bouton */
   function handleSearchClick() {
-    setLoading(true);
-    clearSearchResults();
-    google.clearPosition();
+    setLoading(true); // passe l'application en mode chargement
+    clearSearchResults(); // efface les précédents résultats de recherche
+    google.clearPosition(); // efface la position pour la recherche recherche
+    // lance la recherche
     google.searchNearby((results) => {
-      addRestaurants(results);
-      setLoading(false);
+      addRestaurants(results); // ajoute les restaurants à la liste
+      setLoading(false); // désactive le mode chargement
     });
-    setListView();
+    setListView(); // active la vue liste
   }
 
   return (

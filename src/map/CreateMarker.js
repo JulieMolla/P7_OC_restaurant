@@ -1,6 +1,7 @@
 import React from "react";
 import AddLocationIcon from "@material-ui/icons/AddLocation";
 
+/** Component, marker afficher sur la carte lors de la création d'un restaurant */
 function CreateMarker() {
   return (
     <AddLocationIcon

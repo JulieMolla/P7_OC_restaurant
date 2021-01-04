@@ -8,21 +8,30 @@ import Marker from "./Marker";
 import CreateMarker from "./CreateMarker";
 import SearchZoneButton from "./SearchZoneButton";
 
-function SimpleMap({ zoom = 12, ...props }) {
-  const [createMarker, setCreateMarker] = useState(undefined);
-  const [dropdownMenu, setDropdownMenu] = useState(false);
+/**
+ * Component affichant la carte
+ * @param {*} param0
+ */
+function SimpleMap() {
+  const [createMarker, setCreateMarker] = useState(undefined); // marker affiché lors de la création
+  const [dropdownMenu, setDropdownMenu] = useState(false); // menu contextuel
 
   const google = useContext(GoogleApiContext);
   const { selected, displayed, view, setFormView, setListView } = useContext(
     RestaurantContext
   );
 
+  // hook exécuter au changement de vue pour supprimer le marker de création, au passage au mode liste et détail
   useEffect(() => {
     if (view !== "FORM") {
       setCreateMarker(undefined);
     }
   }, [view]);
 
+  /**
+   * Au clique sur la carte, créer le marker de création et le menu contextuel, ou les supprimes s'ils sont déjà présents
+   * @param {*} params: position sur la carte
+   */
   function handleClickMap(params) {
     if (selected || createMarker) {
       setCreateMarker(undefined);
@@ -34,25 +43,38 @@ function SimpleMap({ zoom = 12, ...props }) {
     }
   }
 
+  /**
+   * Au clique sur le menu contextuel pour créer un restaurant
+   * Activ
+   */
   function handleCreateRestaurant() {
-    setDropdownMenu(false);
+    setDropdownMenu(false); // ferme le menu
 
+    // lance une requête pour récupérer l'adresse correspondant au marker de création
     google.geocoder.geocode({ location: createMarker }, (results, status) => {
       if (status === "OK") {
+        // si la réponse est valide
         if (results[0]) {
-          const address = results[0].formatted_address;
+          // s'il y a des résultats
+          const address = results[0].formatted_address; // Récupère l'adresse du premier resultat
+
+          // active la vue formulaire, avec un restaurant correspondant à la position et l'adresse
           setFormView({
             lat: createMarker.lat,
             long: createMarker.lng,
             address,
           });
         } else {
+          // pas de résultat pour l'adresse
+          // active la vue formulaire
           setFormView({
             lat: createMarker.lat,
             long: createMarker.lng,
           });
         }
       } else {
+        // erreur lors de la requête pour l'adresse
+        // active la vue formulaire
         setFormView({
           lat: createMarker.lat,
           long: createMarker.lng,

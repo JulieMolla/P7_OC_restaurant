@@ -3,6 +3,9 @@ import React, { useState, useContext, useEffect } from "react";
 
 import { RestaurantContext } from "../restaurant/RestaurantContext";
 
+/**
+ * Retourne le style du marker
+ */
 function getStyle({ isHover, isSelected, isCreating, style }) {
   const size = 30;
   const normalStyle = {
@@ -21,11 +24,11 @@ function getStyle({ isHover, isSelected, isCreating, style }) {
 
   const hoverStyle = { ...normalStyle, backgroundColor: "red" };
   const selectedStyle = { ...normalStyle, backgroundColor: "green" };
-  const creatingStyle = { ...normalStyle, backgroundColor: "blue" };
+  // const creatingStyle = { ...normalStyle, backgroundColor: "blue" };
 
-  if (isCreating) {
-    return creatingStyle;
-  }
+  // if (isCreating) {
+  //   return creatingStyle;
+  // }
 
   if (isSelected) {
     return selectedStyle;
@@ -38,8 +41,14 @@ function getStyle({ isHover, isSelected, isCreating, style }) {
   return normalStyle;
 }
 
+/**
+ * Component utiliser pour indiquer la position des restaurants sur la carte
+ * @prop {*} children: éléments fils contenant le numéro du marker
+ * @prop {*} restaurant: restaurant associé au marker
+ * @prop {*} style: style à appliquer au marker
+ */
 function Marker({ children, restaurant, style }) {
-  const [isCreating, setIsCreating] = useState(false);
+  // const [isCreating, setIsCreating] = useState(false);
   const [isSelected, setIsSelected] = useState(false);
   const [isHover, setIsHover] = useState(false);
 
@@ -47,14 +56,7 @@ function Marker({ children, restaurant, style }) {
     RestaurantContext
   );
 
-  useEffect(() => {
-    if (!restaurant) {
-      setIsCreating(true);
-    } else {
-      setIsCreating(false);
-    }
-  }, [restaurant]);
-
+  // hook modifiant l'état du marker
   useEffect(() => {
     if (restaurant === selected) {
       setIsSelected(true);
@@ -63,6 +65,7 @@ function Marker({ children, restaurant, style }) {
     }
   }, [restaurant, selected]);
 
+  // hook modifiant l'état du marker
   useEffect(() => {
     if (restaurant === hover) {
       setIsHover(true);
@@ -71,21 +74,30 @@ function Marker({ children, restaurant, style }) {
     }
   }, [restaurant, hover]);
 
+  /**
+   * Permet d'activer la vue détail au click sur le marker
+   */
   function handleClick() {
     setDetailView(restaurant);
   }
 
+  /**
+   * Lorsque la souris entre dans la zone du marker
+   */
   function handleMouseEnter() {
     setHoverRestaurant(restaurant);
   }
 
+  /**
+   * Lorsque la souris sort de la zone du marker
+   */
   function handleMouseLeave() {
     setHoverRestaurant(undefined);
   }
 
   return (
     <Avatar
-      style={getStyle({ isHover, isSelected, isCreating, style })}
+      style={getStyle({ isHover, isSelected, style })}
       onClick={handleClick}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}

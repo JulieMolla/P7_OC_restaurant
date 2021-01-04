@@ -1,43 +1,34 @@
-import React, { useContext } from "react";
+import React from "react";
 import "./App.css";
 import SimpleMap from "./map/SimpleMap";
-import RestaurantDetail from "./restaurant/RestaurantDetail";
-import RestaurantForm from "./restaurant/RestaurantForm";
-import FilteredRestaurantList from "./restaurant/FilteredRestaurantList";
-import { RestaurantContext } from "./restaurant/RestaurantContext";
 import SearchBar from "./restaurant/SearchBar";
 import { AppBar, Box, Toolbar, Typography } from "@material-ui/core";
 import Footer from "./Footer";
+import RestaurantView from "./restaurant/RestaurantView";
 
-function RestaurantView({ view }) {
-  if (view === "DETAIL") {
-    return <RestaurantDetail />;
-  } else if (view === "FORM") {
-    return <RestaurantForm />;
-  } else {
-    return (
-      <>
-        <FilteredRestaurantList />
-      </>
-    );
-  }
-}
-
+/**
+ * Component principale de l'application
+ * Permet de définir la disposition des éléments principaux de l'interface
+ * (navbar, search bar, main, footer)
+ */
 function App() {
-  const { view } = useContext(RestaurantContext);
-
   return (
     <>
+      {/* Container */}
       <Box component="div" className="container">
+        {/* Navbar */}
         <AppBar position="static">
           <Toolbar>
             <Typography variant="h6">Avis Restaurants</Typography>
           </Toolbar>
         </AppBar>
+
+        {/* Search Bar */}
         <Box component="div" zIndex={1} boxShadow={2} p={5}>
           <SearchBar />
-          {/* <SearchForm /> */}
         </Box>
+
+        {/* Main */}
         <Box
           component="div"
           css={{
@@ -46,13 +37,17 @@ function App() {
             overflowY: "scroll",
           }}
         >
+          {/* Map */}
           <SimpleMap />
 
+          {/* Vue (liste, détail, formulaire) */}
           <Box component="div" className="sideBar">
-            <RestaurantView view={view} />
+            <RestaurantView />
           </Box>
         </Box>
       </Box>
+
+      {/* Footer */}
       <Footer />
     </>
   );

@@ -6,11 +6,13 @@ import VerifiedUserIcon from "@material-ui/icons/VerifiedUser";
 import { round } from "../utils";
 import Marker from "../map/Marker";
 
+/** Component affichant la distance */
 function RestaurantDistance({ restaurant }) {
   if (!restaurant.distance) {
     return null;
   }
 
+  // Si la distance est inférieur à 1km on transforme pour afficher en mètre
   if (restaurant.distance < 1) {
     return <>({restaurant.distance * 1000}m)</>;
   }
@@ -18,6 +20,14 @@ function RestaurantDistance({ restaurant }) {
   return <>({round(restaurant.distance, 1)}km)</>;
 }
 
+/**
+ * Component affichant un restaurant pour un liste
+ * @prop {*} restaurant: restaurant affiché
+ * @prop {*} index: index du restaurant dans la liste
+ * @prop {*} isHover: indique si l'élément est survolé
+ * @prop {*} onClick: callback exécutée au click sur l'élément
+ * @prop {*} onHover: callback exécutée au survole de l'élément
+ */
 function RestaurantListItem({ restaurant, index, isHover, onClick, onHover }) {
   function handleClick() {
     onClick(restaurant);

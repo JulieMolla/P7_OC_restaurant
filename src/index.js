@@ -9,6 +9,7 @@ import reportWebVitals from "./reportWebVitals";
 
 ReactDOM.render(
   <React.StrictMode>
+    {/* Encapsulation de l'app par les contextes pour avoir accès aux contextes dans tous les components de l'application */}
     <GoogleApiContextProvider>
       <RestaurantContextProvider>
         <App />

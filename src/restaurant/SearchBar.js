@@ -10,6 +10,7 @@ import { GoogleApiContext } from "../map/GoogleApiContext";
 import { RestaurantContext } from "./RestaurantContext";
 import { Button } from "@material-ui/core";
 
+// créer une fonction générant un objet style basé sur le theme material-ui
 const useStyles = makeStyles((theme) => ({
   root: {
     padding: "2px 4px",
@@ -30,9 +31,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+/**
+ * Component pour la barre de recherche
+ */
 function SearchBar() {
-  const [address, setAddress] = useState("");
-  const classes = useStyles();
+  const classes = useStyles(); // récupère les styles du component
+
+  const [address, setAddress] = useState(""); // valeur du champs adress
+
+  // récupération des contexts
   const google = useContext(GoogleApiContext);
   const {
     clearSearchResults,
@@ -41,29 +48,48 @@ function SearchBar() {
     setLoading,
   } = useContext(RestaurantContext);
 
+  /**
+   * éxecuté après le resultat de la géolocalisation obtenu après le clique sur le bouton geolocalisation
+   * @param {*} position
+   */
   function handleLocation(position) {
-    setLoading(true);
-    clearSearchResults();
+    setLoading(true); // active l'état "en chargement"
+    clearSearchResults(); // efface les résultats de recherché précédent
+
+    // lance la recherche autour de la position
+    // la fonction search around position encapsule l'api places et geocoding pour récupérer l'adresse en plus des restaurants
     google.searchAroundPosition(position, (results, address) => {
-      setAddress(address);
-      addRestaurants(results);
-      setLoading(false);
+      // callback exécuté lorsque l'api google renvoit des résultats
+      setAddress(address); // rempli le champs adress
+      addRestaurants(results); // ajoute les resultats de la recherche à la liste de tous les restaurants
+      setLoading(false); // désactive l'état "en chargement"
     });
-    setListView();
+
+    setListView(); // Change la vue
   }
 
+  /**
+   *
+   */
   function handleSearchAddress(event) {
-    event.preventDefault();
-    setLoading(true);
-    clearSearchResults();
+    event.preventDefault(); // empêche l'événement submit par défaut du formulaire de s'exécuter
+    setLoading(true); // active l'état "en chargement"
+    clearSearchResults(); // efface les résultats de recherché précédent
+
+    // lance la recherche par adresse
     google.searchAroundAddress(address, (results, address) => {
+      // callback exécuté lorsque l'api google renvoit des résultats
       setAddress(address);
       addRestaurants(results);
       setLoading(false);
     });
+
     setListView();
   }
 
+  /**
+   * Réinitialise les résultats de la recherche et la carte à l'état initial (conserve les restaurants créés manuellement)
+   */
   function resetSearch() {
     clearSearchResults();
     setAddress("");

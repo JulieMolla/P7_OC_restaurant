@@ -1,15 +1,19 @@
 import { GOOGLE_API_KEY } from "./google-api-key";
 
+/**
+ * Retourne la photo street view correspondant à la position
+ * @param {*} lat
+ * @param {*} lng
+ */
 export function getStreetViewImage(lat, lng) {
   return `https://maps.googleapis.com/maps/api/streetview?size=400x400&location=${lat},${lng}&key=${GOOGLE_API_KEY}`;
 }
 
-export function fetchReverseGeocoding(lat, lng) {
-  return fetch(
-    `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${GOOGLE_API_KEY}`
-  ).then((response) => response.json());
-}
-
+/**
+ * Calcule la distance entre deux positions en km
+ * @param {*} p1: position 1
+ * @param {*} p2: position 2
+ */
 export function calculateDistance(p1, p2) {
   var R = 6371; // Radius of the earth in km
   var dLat = deg2rad(p2.lat - p1.lat); // deg2rad below

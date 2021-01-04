@@ -3,13 +3,19 @@ import { Box, Slider } from "@material-ui/core";
 
 import "./RestaurantFilter.css";
 
+/**
+ * Component qui affiche un slider pour filtrer les restaurants
+ * @prop {*} onFilter: callback pour mettre à jour le filtre
+ */
 function RestaurantFilter({ onFilter }) {
-  const [value, setValue] = useState([0, 5]);
+  const [value, setValue] = useState([0, 5]); // valeur du filtre
 
+  /** met à jour la valeur */
   function handleChange(event, newValue) {
     setValue(newValue);
   }
 
+  /** envoie la nouvelle valeur du filtre lorsqu'on arrête de manipuler le slider */
   function handleChangeCommitted() {
     onFilter(value);
   }

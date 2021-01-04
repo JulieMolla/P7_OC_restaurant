@@ -2,18 +2,31 @@ import React, { useState } from "react";
 import Rating from "@material-ui/lab/Rating";
 import { Box, Button, TextField } from "@material-ui/core";
 
+/**
+ * Component affichant le formulaire d'ajout d'un commentaire
+ * @prop {*} onSubmit: callback exécutée à l'envoie du formulaire
+ */
 const RatingForm = ({ onSubmit }) => {
-  const [stars, setStars] = useState(0);
-  const [comment, setComment] = useState("");
-  const [hasError, setHasError] = useState(false);
+  const [stars, setStars] = useState(0); // note du commentaire
+  const [comment, setComment] = useState(""); // valeur du champ commentaire
+  const [hasError, setHasError] = useState(false); // indique si le formulaire est en erreur
 
+  /**
+   * À l'envoi du formulaire
+   */
   function handleSubmit(event) {
     event.preventDefault();
+
+    // vérifie le formulaire
     if (comment === "" || stars === 0) {
       setHasError(true);
       return;
     }
+
+    // envoi le formulaire
     onSubmit({ stars: stars, comment: comment });
+
+    // réinitialise le formulaire
     setStars(0);
     setComment("");
     setHasError(false);
