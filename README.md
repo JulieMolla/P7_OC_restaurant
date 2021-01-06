@@ -26,3 +26,8 @@ npm install
 ```sh
 npm start
 ```
+
+## GitHub
+
+Possibilité de voir les trois étapes du développement du projet sur GitHub avec les tags
+https://github.com/JulieMolla/P7_OC_restaurant/tags
